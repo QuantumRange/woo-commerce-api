@@ -2,12 +2,15 @@ package de.quantumrange.woocommerce.route;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import de.quantumrange.woocommerce.oauth.OAuthConfig;
+import de.quantumrange.woocommerce.util.HttpRequestType;
 import de.quantumrange.woocommerce.util.Json;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
@@ -23,9 +26,10 @@ import java.util.concurrent.Callable;
  * The {@link #data()} get encoded into json and attached to the request.
  */
 public record CompiledRoute(OAuthConfig config,
+							String endpoint,
 							Route route,
 							Map<String, String> query,
-							Map<String, Objects> data) implements Callable<JsonNode> {
+							Map<String, Object> data) implements Callable<JsonNode> {
 
 	private static final String CONTENT_TYPE = "Content-Type";
 	private static final String APPLICATION_JSON = "application/json";
@@ -46,13 +50,11 @@ public record CompiledRoute(OAuthConfig config,
 
 		httpPost.setHeader(CONTENT_TYPE, APPLICATION_JSON);
 
-		return execute(httpPost);
+		return executeJson(httpPost);
 	}
 
 	private JsonNode get() throws URISyntaxException, IOException {
 		HttpGet httpGet = new HttpGet(buildURI(buildURL()));
-
-		System.out.println("> " + httpGet.getURI());
 
 		return execute(httpGet);
 	}
@@ -62,7 +64,7 @@ public record CompiledRoute(OAuthConfig config,
 
 		httpPut.setHeader(CONTENT_TYPE, APPLICATION_JSON);
 
-		return execute(httpPut);
+		return executeJson(httpPut);
 	}
 
 	private JsonNode delete() throws URISyntaxException, IOException {
@@ -71,6 +73,13 @@ public record CompiledRoute(OAuthConfig config,
 		httpDelete.setHeader(CONTENT_TYPE, APPLICATION_JSON);
 
 		return execute(httpDelete);
+	}
+
+	private JsonNode executeJson(HttpEntityEnclosingRequestBase http) throws IOException {
+		HttpEntity entity  = new ByteArrayEntity(Json.createMapper().writeValueAsBytes(data),
+				ContentType.APPLICATION_JSON);
+		http.setEntity(entity);
+		return execute(http);
 	}
 
 	private JsonNode execute(HttpRequestBase httpRequest) throws IOException {
@@ -90,16 +99,16 @@ public record CompiledRoute(OAuthConfig config,
 	}
 
 	private String buildURL() {
-		return OAuthSignature.formatUrl(config, route);
+		return OAuthSignature.formatUrl(config, this);
 	}
 
 	private URI buildURI(String url) throws URISyntaxException {
-		return buildURI(url, new HashMap<>());
+		return buildURI(url, query);
 	}
 
 	private URI buildURI(String url, Map<String, String> params) throws URISyntaxException {
 		URIBuilder uriBuilder = new URIBuilder(url);
-		uriBuilder.addParameters(getParametersAsList(OAuthSignature.getMap(config, route, params)));
+		uriBuilder.addParameters(getParametersAsList(OAuthSignature.getMap(config, this, params)));
 		return uriBuilder.build();
 	}
 

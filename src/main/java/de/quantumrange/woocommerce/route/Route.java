@@ -9,12 +9,12 @@ import java.util.Objects;
 
 public record Route(String url, HttpRequestType type) {
 
-	public CompiledRoute compile(OAuthConfig config, Map<String, String> params, Map<String, Objects> data) {
-		return new CompiledRoute(config, this, params, data);
+	public CompiledRoute compileGet(OAuthConfig config, Map<String, String> params, Object... args) {
+		return new CompiledRoute(config, url.formatted(args), this, params, Collections.emptyMap());
 	}
 
-	public CompiledRoute compile(OAuthConfig config, Map<String, String> params) {
-		return compile(config, params, Collections.emptyMap());
+	public CompiledRoute compile(OAuthConfig config, Map<String, Object> data, Object... args) {
+		return new CompiledRoute(config, url.formatted(args), this, Collections.emptyMap(), data);
 	}
 
 }

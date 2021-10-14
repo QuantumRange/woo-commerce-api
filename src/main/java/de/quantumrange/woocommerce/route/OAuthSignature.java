@@ -49,7 +49,7 @@ public class OAuthSignature {
 
 	}
 
-	public static Map<String, String> getMap(OAuthConfig config, Route route, Map<String, String> params) {
+	public static Map<String, String> getMap(OAuthConfig config, CompiledRoute route, Map<String, String> params) {
 		Map<String, String> authParams = new HashMap<>();
 
 		authParams.put(OAuthHeader.OAUTH_CONSUMER_KEY.getKey(), config.getConsumerKey());
@@ -58,7 +58,7 @@ public class OAuthSignature {
 		authParams.put(OAuthHeader.OAUTH_SIGNATURE_METHOD.getKey(), SIGNATURE_METHOD_HMAC_SHA256);
 		authParams.putAll(params);
 
-		if (route.type() == HttpRequestType.DELETE) {
+		if (route.route().type() == HttpRequestType.DELETE) {
 			authParams.put(DELETE_PARAM_FORCE, "true");
 		}
 
@@ -67,7 +67,7 @@ public class OAuthSignature {
 		return authParams;
 	}
 
-	public static String getAsQueryString(OAuthConfig config, Route route, Map<String, String> params) {
+	public static String getAsQueryString(OAuthConfig config, CompiledRoute route, Map<String, String> params) {
 		Map<String, String> oauthParameters = getMap(config, route, params);
 		String encodedSignature = oauthParameters.get(OAuthHeader.OAUTH_SIGNATURE.getKey())
 				.replace("+", "%2B");
@@ -75,8 +75,8 @@ public class OAuthSignature {
 		return mapToString(oauthParameters, "=", "&");
 	}
 
-	private static String generateOAuthSignature(OAuthConfig config, Route route, Map<String, String> params) {
-		String signatureBaseString = getSignatureBaseString(formatUrl(config, route), route.type(), params);
+	private static String generateOAuthSignature(OAuthConfig config, CompiledRoute route, Map<String, String> params) {
+		String signatureBaseString = getSignatureBaseString(formatUrl(config, route), route.route().type(), params);
 		// v1, v2
 		String secret = config.getConsumerSecret() + "&";
 		return signBaseString(secret, signatureBaseString);
@@ -93,8 +93,8 @@ public class OAuthSignature {
 		}
 	}
 
-	public static String formatUrl(OAuthConfig config, Route route) {
-		return API_URL_FORMAT.formatted(config.getHost(), route.url());
+	public static String formatUrl(OAuthConfig config, CompiledRoute route) {
+		return API_URL_FORMAT.formatted(config.getHost(), route.endpoint());
 	}
 
 	private static String getSignatureBaseString(String url, HttpRequestType method, Map<String, String> params) {
