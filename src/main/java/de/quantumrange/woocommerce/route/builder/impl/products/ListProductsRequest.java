@@ -56,7 +56,7 @@ public class ListProductsRequest extends GetRequestBuilder<List<Product>> {
 	 * @param search is by default 10.
 	 * @return builder
 	 */
-	public ListProductsRequest setPerPage(String search) {
+	public ListProductsRequest setSearch(String search) {
 		put("search", search);
 		return this;
 	}
