@@ -10,6 +10,7 @@ import de.quantumrange.woocommerce.util.Json;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -350,11 +351,13 @@ public class ListProductsRequest extends GetRequestBuilder<List<Product>> {
 
 	@Override
 	protected List<Product> convert(JsonNode node) {
-		try {
-			return Json.createMapper().treeToValue(node, List.class);
-		} catch (JsonProcessingException e) {
-			throw new IllegalArgumentException(e);
+		List<Product> products = new ArrayList<>();
+
+		for (int i = 0; i < node.size(); i++) {
+			products.add(new Product(node.get(i)));
 		}
+
+		return products;
 	}
 
 	public enum ContextType {

@@ -491,10 +491,7 @@ public class UpdateProductRequest extends PostRequestBuilder<Product> {
 
 	@Override
 	protected Product convert(JsonNode node) {
-		return null;
+		return new Product(node);
 	}
 
-	public enum CatalogVisibility {
-		VISIBLE, CATALOG, SEARCH, HIDDEN
-	}
 }
