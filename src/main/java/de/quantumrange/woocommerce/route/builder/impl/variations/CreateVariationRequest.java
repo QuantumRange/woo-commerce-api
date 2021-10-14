@@ -47,7 +47,7 @@ public class CreateVariationRequest extends PostRequestBuilder<Variation> {
 	 * @return itself
 	 */
 	public CreateVariationRequest setSKU(String sku)  {
-		put("sku",  null);
+		put("sku", sku);
 		return this;
 	}
 

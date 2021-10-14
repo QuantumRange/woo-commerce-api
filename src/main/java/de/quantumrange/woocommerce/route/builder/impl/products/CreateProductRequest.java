@@ -35,7 +35,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @return itself
 	 */
 	public CreateProductRequest setSlug(String slug)  {
-		put("slug",  null);
+		put("slug", slug);
 		return this;
 	}
 
@@ -111,7 +111,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @return itself
 	 */
 	public CreateProductRequest setSKU(String sku)  {
-		put("sku",  null);
+		put("sku", sku);
 		return this;
 	}
 
@@ -420,7 +420,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @return itself
 	 */
 	public CreateProductRequest setTags(Tag... tags)  {
-		put("tags",  null);
+		put("tags", JMap.pack(tags));
 		return this;
 	}
 
