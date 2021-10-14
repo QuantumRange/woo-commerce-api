@@ -12,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 
 public class UpdateProductRequest extends PostRequestBuilder<Product> {
 
-	public UpdateProductRequest(OAuthConfig config, long productID) {
+	public UpdateProductRequest(OAuthConfig config, int productID) {
 		super(config, Routes.Products.UPDATE, productID);
 	}
 

@@ -38,4 +38,15 @@ public final class Routes {
 
 	}
 
+	public static final class Variations {
+
+		/**
+		 * <a href="https://woocommerce.github.io/woocommerce-rest-api-docs/#create-a-product-variation">
+		 *     WooCommerce Documentation / Create Variation
+		 * </a>
+		 */
+		public static final Route CREATE = new Route("wc/v3/products/%d/variations", PUT);
+
+	}
+
 }

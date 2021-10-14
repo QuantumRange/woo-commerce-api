@@ -2,7 +2,11 @@ package de.quantumrange.woocommerce.models;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import de.quantumrange.woocommerce.oauth.OAuthConfig;
 import de.quantumrange.woocommerce.route.builder.impl.products.CreateProductRequest;
+import de.quantumrange.woocommerce.route.builder.impl.products.DeleteProductRequest;
+import de.quantumrange.woocommerce.route.builder.impl.products.UpdateProductRequest;
+import de.quantumrange.woocommerce.route.builder.impl.variations.CreateVariationRequest;
 import de.quantumrange.woocommerce.util.Json;
 
 import java.time.LocalDateTime;
@@ -32,8 +36,21 @@ public class Product {
 	public <T> T get(String key) {
 		return (T) getObject(key);
 	}
+
 	public Object getObject(String key) {
 		return data.get(key);
+	}
+
+	public UpdateProductRequest update(OAuthConfig config) {
+		return new UpdateProductRequest(config, id);
+	}
+
+	public DeleteProductRequest delete(OAuthConfig config) {
+		return new DeleteProductRequest(config, id);
+	}
+
+	public CreateVariationRequest addVariation(OAuthConfig config) {
+		return new CreateVariationRequest(config, id);
 	}
 
 	@Override
