@@ -52,6 +52,8 @@ public record CompiledRoute(OAuthConfig config,
 	private JsonNode get() throws URISyntaxException, IOException {
 		HttpGet httpGet = new HttpGet(buildURI(buildURL()));
 
+		System.out.println("> " + httpGet.getURI());
+
 		return execute(httpGet);
 	}
 
@@ -97,7 +99,7 @@ public record CompiledRoute(OAuthConfig config,
 
 	private URI buildURI(String url, Map<String, String> params) throws URISyntaxException {
 		URIBuilder uriBuilder = new URIBuilder(url);
-		uriBuilder.addParameters(getParametersAsList(params));
+		uriBuilder.addParameters(getParametersAsList(OAuthSignature.getMap(config, route, params)));
 		return uriBuilder.build();
 	}
 

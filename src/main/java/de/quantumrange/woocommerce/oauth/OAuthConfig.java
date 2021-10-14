@@ -20,7 +20,7 @@ public class OAuthConfig {
 	 * @param version is the current {@link APIVersion} of the host.
 	 */
 	public OAuthConfig(String host, String consumerKey, String consumerSecret, APIVersion version) {
-		if (host.endsWith("/")) host = host.substring(0, host.length() - 2);
+		if (host.endsWith("/")) host = host.substring(0, host.length() - 1);
 		this.host = host;
 		this.consumerKey = consumerKey;
 		this.consumerSecret = consumerSecret;

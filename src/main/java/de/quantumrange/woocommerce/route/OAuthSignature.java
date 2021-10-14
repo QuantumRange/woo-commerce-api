@@ -105,7 +105,7 @@ public class OAuthSignature {
 		encodedParams = new TreeMap<>(encodedParams);
 		String paramsString = mapToString(encodedParams, "%3D", "%26");
 
-		return String.format(BASE_SIGNATURE_FORMAT, method.name(), url, paramsString);
+		return String.format(BASE_SIGNATURE_FORMAT, method.name(), requestURL, paramsString);
 	}
 
 	private static String mapToString(Map<String, String> paramsMap, String keyValueDelimiter, String paramsDelimiter) {
