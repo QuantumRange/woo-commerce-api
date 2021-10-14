@@ -268,7 +268,7 @@ public class CreateVariationRequest extends PostRequestBuilder<Variation> {
 	 * @param attributes List of attributes.
 	 * @return itself
 	 */
-	public CreateVariationRequest setAttributes(Attribute... attributes)  {
+	public CreateVariationRequest setAttributes(DefaultAttribute... attributes)  {
 		put("attributes", JMap.pack(attributes));
 		return this;
 	}
