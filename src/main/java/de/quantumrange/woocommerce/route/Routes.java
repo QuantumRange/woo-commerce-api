@@ -45,7 +45,7 @@ public final class Routes {
 		 *     WooCommerce Documentation / Create Variation
 		 * </a>
 		 */
-		public static final Route CREATE = new Route("wc/v3/products/%d/variations", PUT);
+		public static final Route CREATE = new Route("wc/v3/products/%d/variations", POST);
 
 	}
 
