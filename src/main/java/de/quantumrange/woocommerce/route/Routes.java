@@ -29,6 +29,13 @@ public final class Routes {
 		 */
 		public static final Route CREATE = new Route("wc/v3/products", POST);
 
+		/**
+		 * <a href="https://woocommerce.github.io/woocommerce-rest-api-docs/#update-a-product">
+		 *     WooCommerce Documentation / Update
+		 * </a>
+		 */
+		public static final Route UPDATE = new Route("wc/v3/products/%d", PUT);
+
 	}
 
 }

@@ -2,10 +2,7 @@ package de.quantumrange.woocommerce.route.builder.impl.products;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import de.quantumrange.woocommerce.models.Product;
-import de.quantumrange.woocommerce.models.ProductType;
-import de.quantumrange.woocommerce.models.Status;
-import de.quantumrange.woocommerce.models.TaxClass;
+import de.quantumrange.woocommerce.models.*;
 import de.quantumrange.woocommerce.oauth.OAuthConfig;
 import de.quantumrange.woocommerce.route.Routes;
 import de.quantumrange.woocommerce.route.builder.GetRequestBuilder;

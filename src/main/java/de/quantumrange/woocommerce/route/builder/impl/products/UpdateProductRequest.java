@@ -3,7 +3,6 @@ package de.quantumrange.woocommerce.route.builder.impl.products;
 import com.fasterxml.jackson.databind.JsonNode;
 import de.quantumrange.woocommerce.models.*;
 import de.quantumrange.woocommerce.oauth.OAuthConfig;
-import de.quantumrange.woocommerce.route.Route;
 import de.quantumrange.woocommerce.route.Routes;
 import de.quantumrange.woocommerce.route.builder.PostRequestBuilder;
 import de.quantumrange.woocommerce.util.JMap;
@@ -11,10 +10,10 @@ import de.quantumrange.woocommerce.util.JMap;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class CreateProductRequest extends PostRequestBuilder<Product> {
+public class UpdateProductRequest extends PostRequestBuilder<Product> {
 
-	public CreateProductRequest(OAuthConfig config) {
-		super(config, Routes.Products.CREATE);
+	public UpdateProductRequest(OAuthConfig config, long productID) {
+		super(config, Routes.Products.UPDATE, productID);
 	}
 
 	/**
@@ -23,7 +22,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param name Product name.
 	 * @return itself
 	 */
-	public CreateProductRequest setName(String name)  {
+	public UpdateProductRequest setName(String name)  {
 		put("name",  name);
 		return this;
 	}
@@ -34,7 +33,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param slug Product slug.
 	 * @return itself
 	 */
-	public CreateProductRequest setSlug(String slug)  {
+	public UpdateProductRequest setSlug(String slug)  {
 		put("slug",  null);
 		return this;
 	}
@@ -45,7 +44,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param type Product type. Options: simple, grouped, external and variable. Default is simple.
 	 * @return itself
 	 */
-	public CreateProductRequest setType(ProductType type)  {
+	public UpdateProductRequest setType(ProductType type)  {
 		put("type", type.name().toLowerCase());
 		return this;
 	}
@@ -56,7 +55,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param status Product status (post status). Options: draft, pending, private and publish. Default is publish.
 	 * @return itself
 	 */
-	public CreateProductRequest setStatus(Status status)  {
+	public UpdateProductRequest setStatus(Status status)  {
 		put("status", status.name().toLowerCase());
 		return this;
 	}
@@ -67,7 +66,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param featured Featured product. Default is false.
 	 * @return itself
 	 */
-	public CreateProductRequest setFeatured(boolean featured)  {
+	public UpdateProductRequest setFeatured(boolean featured)  {
 		put("featured", Boolean.toString(featured));
 		return this;
 	}
@@ -78,7 +77,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param visibility Catalog visibility. Options: visible, catalog, search and hidden. Default is visible.
 	 * @return itself
 	 */
-	public CreateProductRequest setCatalogVisibility(CatalogVisibility visibility)  {
+	public UpdateProductRequest setCatalogVisibility(CatalogVisibility visibility)  {
 		put("catalog_visibility", visibility.name().toLowerCase());
 		return this;
 	}
@@ -88,7 +87,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param description Product description.
 	 * @return itself
 	 */
-	public CreateProductRequest setDescription(String description)  {
+	public UpdateProductRequest setDescription(String description)  {
 		put("description", description);
 		return this;
 	}
@@ -99,7 +98,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param shortDescription Product short description.
 	 * @return itself
 	 */
-	public CreateProductRequest setShortDescription(String shortDescription)  {
+	public UpdateProductRequest setShortDescription(String shortDescription)  {
 		put("short_description", shortDescription);
 		return this;
 	}
@@ -110,7 +109,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param sku Unique identifier.
 	 * @return itself
 	 */
-	public CreateProductRequest setSKU(String sku)  {
+	public UpdateProductRequest setSKU(String sku)  {
 		put("sku",  null);
 		return this;
 	}
@@ -121,7 +120,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param regularPrice Product regular price.
 	 * @return itself
 	 */
-	public CreateProductRequest setRegularPrice(double regularPrice)  {
+	public UpdateProductRequest setRegularPrice(double regularPrice)  {
 		put("regular_price", Double.toString(regularPrice));
 		return this;
 	}
@@ -132,7 +131,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param salePrice Product sale price.
 	 * @return itself
 	 */
-	public CreateProductRequest setSalePrice(double salePrice)  {
+	public UpdateProductRequest setSalePrice(double salePrice)  {
 		put("sale_price", Double.toString(salePrice));
 		return this;
 	}
@@ -144,7 +143,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param price Product sale price.
 	 * @return itself
 	 */
-	public CreateProductRequest setSale(LocalDateTime from, LocalDateTime to, double price) {
+	public UpdateProductRequest setSale(LocalDateTime from, LocalDateTime to, double price) {
 		setSaleDateFrom(from);
 		setSaleDateTo(to);
 		setSalePrice(price);
@@ -157,7 +156,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param from Start date of sale price, in the site's timezone.
 	 * @return itself
 	 */
-	public CreateProductRequest setSaleDateFrom(LocalDateTime from)  {
+	public UpdateProductRequest setSaleDateFrom(LocalDateTime from)  {
 		put("date_on_sale_from", from.format(DateTimeFormatter.ISO_DATE_TIME));
 		return this;
 	}
@@ -167,7 +166,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param to End date of sale price, in the site's timezone.
 	 * @return itself
 	 */
-	public CreateProductRequest setSaleDateTo(LocalDateTime to)  {
+	public UpdateProductRequest setSaleDateTo(LocalDateTime to)  {
 		put("date_on_sale_to", to.format(DateTimeFormatter.ISO_DATE_TIME));
 		return this;
 	}
@@ -178,7 +177,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param virtual If the product is virtual. Default is false.
 	 * @return itself
 	 */
-	public CreateProductRequest setVirtual(boolean virtual)  {
+	public UpdateProductRequest setVirtual(boolean virtual)  {
 		put("virtual", Boolean.toString(virtual));
 		return this;
 	}
@@ -189,7 +188,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param downloadable If the product is downloadable. Default is false.
 	 * @return itself
 	 */
-	public CreateProductRequest setDownloadable(boolean downloadable)  {
+	public UpdateProductRequest setDownloadable(boolean downloadable)  {
 		put("downloadable", Boolean.toString(downloadable));
 		return this;
 	}
@@ -200,7 +199,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param downloads List of downloadable files.
 	 * @return itself
 	 */
-	public CreateProductRequest setDownloads(Download... downloads)  {
+	public UpdateProductRequest setDownloads(Download... downloads)  {
 		put("downloads", JMap.pack(downloads));
 		return this;
 	}
@@ -211,7 +210,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param downloadLimit Number of times downloadable files can be downloaded after purchase. Default is -1.
 	 * @return itself
 	 */
-	public CreateProductRequest setDownloadLimit(int downloadLimit)  {
+	public UpdateProductRequest setDownloadLimit(int downloadLimit)  {
 		put("download_limit", downloadLimit);
 		return this;
 	}
@@ -222,7 +221,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param downloadExpiry Number of days until access to downloadable files expires. Default is -1.
 	 * @return itself
 	 */
-	public CreateProductRequest setDownloadExpiry(int downloadExpiry)  {
+	public UpdateProductRequest setDownloadExpiry(int downloadExpiry)  {
 		put("download_expiry", downloadExpiry);
 		return this;
 	}
@@ -232,7 +231,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param externalUrl Product external URL. Only for external products.
 	 * @return itself
 	 */
-	public CreateProductRequest setExternalUrl(String externalUrl)  {
+	public UpdateProductRequest setExternalUrl(String externalUrl)  {
 		put("external_url", externalUrl);
 		return this;
 	}
@@ -243,7 +242,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param buttonText Product external button text. Only for external products.
 	 * @return itself
 	 */
-	public CreateProductRequest setButtonText(String buttonText)  {
+	public UpdateProductRequest setButtonText(String buttonText)  {
 		put("button_text", buttonText);
 		return this;
 	}
@@ -254,7 +253,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param taxStatus Tax status. Options: taxable, shipping and none. Default is taxable.
 	 * @return itself
 	 */
-	public CreateProductRequest setTaxStatus(TaxStatus taxStatus)  {
+	public UpdateProductRequest setTaxStatus(TaxStatus taxStatus)  {
 		put("tax_status", taxStatus.name().toLowerCase());
 		return this;
 	}
@@ -265,7 +264,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param taxClass Tax class.
 	 * @return itself
 	 */
-	public CreateProductRequest setTaxClass(TaxClass taxClass)  {
+	public UpdateProductRequest setTaxClass(TaxClass taxClass)  {
 		put("tax_class", taxClass);
 		return this;
 	}
@@ -276,7 +275,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param manageStock Stock management at product level. Default is false.
 	 * @return itself
 	 */
-	public CreateProductRequest setManageStock(boolean manageStock)  {
+	public UpdateProductRequest setManageStock(boolean manageStock)  {
 		put("manage_stock", manageStock);
 		return this;
 	}
@@ -287,7 +286,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param stockQuantity Stock quantity.
 	 * @return itself
 	 */
-	public CreateProductRequest setStockQuantity(int stockQuantity)  {
+	public UpdateProductRequest setStockQuantity(int stockQuantity)  {
 		put("stock_quantity", stockQuantity);
 		return this;
 	}
@@ -298,7 +297,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param status Controls the stock status of the product. Options: instock, outofstock, onbackorder. Default is instock.
 	 * @return itself
 	 */
-	public CreateProductRequest setStockStatus(StockStatus status)  {
+	public UpdateProductRequest setStockStatus(StockStatus status)  {
 		put("stock_status", status.name().toLowerCase().replace(" ", ""));
 		return this;
 	}
@@ -309,7 +308,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param status If managing stock, this controls if backorders are allowed. Options: no, notify and yes. Default is no.
 	 * @return itself
 	 */
-	public CreateProductRequest setBackOrders(BackorderStatus status)  {
+	public UpdateProductRequest setBackOrders(BackorderStatus status)  {
 		put("backorders", status.name().toLowerCase());
 		return this;
 	}
@@ -320,7 +319,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param soldIndividually Allow one item to be bought in a single order. Default is false.
 	 * @return itself
 	 */
-	public CreateProductRequest setSoldIndividually(boolean soldIndividually)  {
+	public UpdateProductRequest setSoldIndividually(boolean soldIndividually)  {
 		put("sold_individually", soldIndividually);
 		return this;
 	}
@@ -331,7 +330,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param weight Product weight.
 	 * @return itself
 	 */
-	public CreateProductRequest setWeight(double weight)  {
+	public UpdateProductRequest setWeight(double weight)  {
 		put("weight", weight);
 		return this;
 	}
@@ -342,7 +341,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param dimension Product dimensions.
 	 * @return itself
 	 */
-	public CreateProductRequest setDimensions(Dimension dimension)  {
+	public UpdateProductRequest setDimensions(Dimension dimension)  {
 		put("dimensions", dimension.convert());
 		return this;
 	}
@@ -353,7 +352,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param reviewsAllowed Allow reviews. Default is true.
 	 * @return itself
 	 */
-	public CreateProductRequest setReviewsAllowed(boolean reviewsAllowed)  {
+	public UpdateProductRequest setReviewsAllowed(boolean reviewsAllowed)  {
 		put("reviews_allowed", reviewsAllowed);
 		return this;
 	}
@@ -364,7 +363,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param ids List of up-sell products IDs.
 	 * @return itself
 	 */
-	public CreateProductRequest setUpSellIds(int... ids)  {
+	public UpdateProductRequest setUpSellIds(int... ids)  {
 		put("upsell_ids", ids);
 		return this;
 	}
@@ -375,7 +374,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param ids List of cross-sell products IDs.
 	 * @return itself
 	 */
-	public CreateProductRequest setCrossSellIds(int... ids)  {
+	public UpdateProductRequest setCrossSellIds(int... ids)  {
 		put("cross_sell_ids", ids);
 		return this;
 	}
@@ -386,7 +385,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param id Product parent ID.
 	 * @return itself
 	 */
-	public CreateProductRequest setParentId(int id)  {
+	public UpdateProductRequest setParentId(int id)  {
 		put("parent_id", id);
 		return this;
 	}
@@ -397,7 +396,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param purchaseNote Optional note to send the customer after purchase.
 	 * @return itself
 	 */
-	public CreateProductRequest setPurchaseNote(String purchaseNote)  {
+	public UpdateProductRequest setPurchaseNote(String purchaseNote)  {
 		put("purchase_note", purchaseNote);
 		return this;
 	}
@@ -408,7 +407,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param categories List of categories.
 	 * @return itself
 	 */
-	public CreateProductRequest setCategories(Categorie... categories)  {
+	public UpdateProductRequest setCategories(Categorie... categories)  {
 		put("categories", JMap.pack(categories));
 		return this;
 	}
@@ -419,7 +418,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param tags List of tags.
 	 * @return itself
 	 */
-	public CreateProductRequest setTags(Tag... tags)  {
+	public UpdateProductRequest setTags(Tag... tags)  {
 		put("tags",  null);
 		return this;
 	}
@@ -430,7 +429,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param images List of images.
 	 * @return itself
 	 */
-	public CreateProductRequest setImages(Image... images)  {
+	public UpdateProductRequest setImages(Image... images)  {
 		put("images", JMap.pack(images));
 		return this;
 	}
@@ -441,7 +440,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param attributes List of attributes.
 	 * @return itself
 	 */
-	public CreateProductRequest setAttributes(Attribute... attributes)  {
+	public UpdateProductRequest setAttributes(Attribute... attributes)  {
 		put("attributes", JMap.pack(attributes));
 		return this;
 	}
@@ -452,7 +451,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param defaultAttributes Defaults variation attributes.
 	 * @return itself
 	 */
-	public CreateProductRequest setDefaultAttributes(DefaultAttribute... defaultAttributes)  {
+	public UpdateProductRequest setDefaultAttributes(DefaultAttribute... defaultAttributes)  {
 		put("default_attributes", JMap.pack(defaultAttributes));
 		return this;
 	}
@@ -463,7 +462,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param groupedProducts List of grouped products ID.
 	 * @return itself
 	 */
-	public CreateProductRequest setGroupProducts(int[] groupedProducts)  {
+	public UpdateProductRequest setGroupProducts(int[] groupedProducts)  {
 		put("grouped_products", groupedProducts);
 		return this;
 	}
@@ -474,7 +473,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param menuOrder List of grouped products ID.
 	 * @return itself
 	 */
-	public CreateProductRequest setMenuOrder(int menuOrder)  {
+	public UpdateProductRequest setMenuOrder(int menuOrder)  {
 		put("menu_order", menuOrder);
 		return this;
 	}
@@ -485,7 +484,7 @@ public class CreateProductRequest extends PostRequestBuilder<Product> {
 	 * @param metadata Meta data.
 	 * @return itself
 	 */
-	public CreateProductRequest setMetaData(Metadata... metadata)  {
+	public UpdateProductRequest setMetaData(Metadata... metadata)  {
 		put("meta_data", JMap.pack(metadata));
 		return this;
 	}

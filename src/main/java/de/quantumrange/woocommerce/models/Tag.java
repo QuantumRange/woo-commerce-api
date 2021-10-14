@@ -1,20 +1,23 @@
 package de.quantumrange.woocommerce.models;
 
 import de.quantumrange.woocommerce.route.builder.Convertable;
+import de.quantumrange.woocommerce.util.JMap;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
-public class Categorie implements Convertable {
+public class Tag implements Convertable {
 
 	private int id;
 	private final String name, slug;
 
-	public Categorie(int id, String name, String slug) {
+	public Tag(int id, String name, String slug) {
 		this.id = id;
 		this.name = name;
 		this.slug = slug;
+	}
+
+	public Tag(String name, String slug) {
+		this(-1, name, slug);
 	}
 
 	public int getId() {
@@ -37,8 +40,8 @@ public class Categorie implements Convertable {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		Categorie that = (Categorie) o;
-		return getId() == that.getId() && Objects.equals(getName(), that.getName()) && Objects.equals(getSlug(), that.getSlug());
+		Tag tag = (Tag) o;
+		return getId() == tag.getId() && Objects.equals(getName(), tag.getName()) && Objects.equals(getSlug(), tag.getSlug());
 	}
 
 	@Override
@@ -48,7 +51,7 @@ public class Categorie implements Convertable {
 
 	@Override
 	public String toString() {
-		return "Categories{" +
+		return "Tag{" +
 				"id=" + id +
 				", name='" + name + '\'' +
 				", slug='" + slug + '\'' +
@@ -57,11 +60,9 @@ public class Categorie implements Convertable {
 
 	@Override
 	public Object convert() {
-		Map<String, Object> map = new HashMap<>();
-
-		map.put("name", name);
-		map.put("slug", slug);
-
-		return map;
+		return new JMap()
+				.put("name", name)
+				.put("slug", slug)
+				.build();
 	}
 }
