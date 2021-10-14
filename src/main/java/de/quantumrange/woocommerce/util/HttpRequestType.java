@@ -9,7 +9,7 @@ import java.util.Arrays;
  * @author QuantumRange
  * @since 1.0.1
  */
-public enum HTTPRequestType {
+public enum HttpRequestType {
 
 	/**
 	 * The GET method requests a representation of the specified resource. Requests using GET should only retrieve data.
@@ -51,8 +51,8 @@ public enum HTTPRequestType {
 	 */
 	PATCH();
 
-	public static HTTPRequestType getRequestByName(String name) {
-		return Arrays.stream(HTTPRequestType.values())
+	public static HttpRequestType getRequestByName(String name) {
+		return Arrays.stream(HttpRequestType.values())
 				.filter(type -> type.name().equalsIgnoreCase(name))
 				.findFirst()
 				.orElse(null);

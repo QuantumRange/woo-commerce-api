@@ -2,12 +2,11 @@ package de.quantumrange.woocommerce.route;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import de.quantumrange.woocommerce.oauth.OAuthConfig;
-import de.quantumrange.woocommerce.util.JSON;
+import de.quantumrange.woocommerce.util.Json;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.*;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -16,17 +15,17 @@ import org.apache.http.message.BasicNameValuePair;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.*;
 import java.util.concurrent.Callable;
 
 /**
  * A {@link CompiledRoute} is the {@link Route} with extra information required for requesting the url.
- * The {@link #parameters()} get encoded into json and attached to the request.
+ * The {@link #data()} get encoded into json and attached to the request.
  */
 public record CompiledRoute(OAuthConfig config,
 							Route route,
-							Map<String, Objects> parameters) implements Callable<JsonNode> {
+							Map<String, String> query,
+							Map<String, Objects> data) implements Callable<JsonNode> {
 
 	private static final String CONTENT_TYPE = "Content-Type";
 	private static final String APPLICATION_JSON = "application/json";
@@ -42,20 +41,34 @@ public record CompiledRoute(OAuthConfig config,
 		};
 	}
 
-	private JsonNode post() throws URISyntaxException {
-		HttpPost httpPost = new HttpPost(buildURI("".formatted(config.getHost())));
+	private JsonNode post() throws URISyntaxException, IOException {
+		HttpPost httpPost = new HttpPost(buildURI(buildURL()));
+
+		httpPost.setHeader(CONTENT_TYPE, APPLICATION_JSON);
+
+		return execute(httpPost);
 	}
 
-	private JsonNode get() {
+	private JsonNode get() throws URISyntaxException, IOException {
+		HttpGet httpGet = new HttpGet(buildURI(buildURL()));
 
+		return execute(httpGet);
 	}
 
-	private JsonNode put() {
+	private JsonNode put() throws URISyntaxException, IOException {
+		HttpPut httpPut = new HttpPut(buildURI(buildURL()));
 
+		httpPut.setHeader(CONTENT_TYPE, APPLICATION_JSON);
+
+		return execute(httpPut);
 	}
 
-	private JsonNode delete() {
+	private JsonNode delete() throws URISyntaxException, IOException {
+		HttpDelete httpDelete = new HttpDelete(buildURI(buildURL()));
 
+		httpDelete.setHeader(CONTENT_TYPE, APPLICATION_JSON);
+
+		return execute(httpDelete);
 	}
 
 	private JsonNode execute(HttpRequestBase httpRequest) throws IOException {
@@ -65,7 +78,7 @@ public record CompiledRoute(OAuthConfig config,
 
 		if (httpEntity == null) throw new RuntimeException("Error retrieving results from http request");
 
-		JsonNode tree = JSON.createMapper()
+		JsonNode tree = Json.createMapper()
 				.reader()
 				.readTree(httpEntity.getContent());
 
@@ -74,10 +87,8 @@ public record CompiledRoute(OAuthConfig config,
 		return tree;
 	}
 
-	private String buildURL(Map<String, String> params) {
-		Object
-
-		return;
+	private String buildURL() {
+		return OAuthSignature.formatUrl(config, route);
 	}
 
 	private URI buildURI(String url) throws URISyntaxException {

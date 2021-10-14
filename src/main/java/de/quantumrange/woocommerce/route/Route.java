@@ -1,7 +1,7 @@
 package de.quantumrange.woocommerce.route;
 
-import de.quantumrange.woocommerce.util.HTTPRequestType;
+import de.quantumrange.woocommerce.util.HttpRequestType;
 
-public record Route(String url, HTTPRequestType type) {
+public record Route(String url, HttpRequestType type) {
 
 }

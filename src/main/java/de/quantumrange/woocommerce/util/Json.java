@@ -27,7 +27,7 @@ import java.time.temporal.ChronoField;
  * @author QuantumRange
  * @since 3.0.0
  */
-public class JSON {
+public class Json {
 
 	private static final DateTimeFormatter DATE_TIME_FORMATTER = new DateTimeFormatterBuilder()
 			.appendOptional(DateTimeFormatter.ISO_DATE_TIME)
@@ -41,7 +41,7 @@ public class JSON {
 			.withZone(ZoneOffset.UTC);
 
 	private static LocalDateTime parseDateTimeString(String str) {
-		return ZonedDateTime.from(JSON.DATE_TIME_FORMATTER.parse(str)).toLocalDateTime();
+		return ZonedDateTime.from(Json.DATE_TIME_FORMATTER.parse(str)).toLocalDateTime();
 	}
 
 	private static final DateTimeFormatter TIME_FORMATTER = new DateTimeFormatterBuilder()
@@ -54,7 +54,7 @@ public class JSON {
 			.withZone(ZoneOffset.UTC);
 
 	private static LocalTime parseTimeString(String str) {
-		return ZonedDateTime.from(JSON.TIME_FORMATTER.parse(str)).toOffsetDateTime().toLocalTime();
+		return ZonedDateTime.from(Json.TIME_FORMATTER.parse(str)).toOffsetDateTime().toLocalTime();
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class JSON {
 			@Override
 			public LocalDateTime deserialize(JsonParser jsonParser, DeserializationContext deserializationContext) throws IOException {
 				String value = jsonParser.getText();
-				return JSON.parseDateTimeString(value);
+				return Json.parseDateTimeString(value);
 			}
 		});
 
