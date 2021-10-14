@@ -1,5 +1,6 @@
 package de.quantumrange.woocommerce.route.builder.impl.products;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import de.quantumrange.woocommerce.models.Product;
 import de.quantumrange.woocommerce.models.ProductType;
@@ -8,6 +9,7 @@ import de.quantumrange.woocommerce.models.TaxClass;
 import de.quantumrange.woocommerce.oauth.OAuthConfig;
 import de.quantumrange.woocommerce.route.Routes;
 import de.quantumrange.woocommerce.route.builder.GetRequestBuilder;
+import de.quantumrange.woocommerce.util.Json;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -351,7 +353,11 @@ public class ListProductsRequest extends GetRequestBuilder<List<Product>> {
 
 	@Override
 	protected List<Product> convert(JsonNode node) {
-		return null;
+		try {
+			return Json.createMapper().treeToValue(node, List.class);
+		} catch (JsonProcessingException e) {
+			throw new IllegalArgumentException(e);
+		}
 	}
 
 	public enum ContextType {
@@ -384,12 +390,6 @@ public class ListProductsRequest extends GetRequestBuilder<List<Product>> {
 		POPULARITY,
 		RATING,
 		DATE
-	}
-
-	public enum StockStatus {
-		IN_STOCK,
-		OUT_OF_STOCK,
-		ON_BACK_ORDER
 	}
 
 }
