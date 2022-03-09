@@ -17,3 +17,6 @@ OAuthConfig config2 = new OAuthConfig("https://woocommerce.com", "ck_...", "ck_.
 ```
 
 #### API
+Currently I'm not working on it, but if someone needs this library I would provide it on maven.
+Simple send my a message or create a issue.
+They are basically already well functional.
